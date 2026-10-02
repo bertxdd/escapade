@@ -1,14 +1,15 @@
-import { useLandingController } from './controllers/useLandingController'
-import { Navbar } from './views/Navbar'
-import { HeroSection } from './views/HeroSection'
-import { StorySection } from './views/StorySection'
-import { MissionSection } from './views/MissionSection'
-import { TicketsSection } from './views/TicketsSection'
-import { LeaderboardSection } from './views/LeaderboardSection'
-import { Footer } from './views/Footer'
+import { useLandingController } from './controllers/useLandingController';
+import { Navbar } from './views/Navbar';
+import { HeroSection } from './views/HeroSection';
+import { StorySection } from './views/StorySection';
+import { MissionSection } from './views/MissionSection';
+import BoothPromotion from './components/BoothPromotion';
+import { TicketsSection } from './views/TicketsSection';
+import { LeaderboardSection } from './views/LeaderboardSection';
+import { Footer } from './views/Footer';
 
 export default function App() {
-  const controller = useLandingController()
+  const controller = useLandingController();
 
   return (
     <div className="min-h-screen bg-[#07090e] text-white flex flex-col font-sans selection:bg-white/30 selection:text-white">
@@ -30,6 +31,9 @@ export default function App() {
       {/* View: Mission Section */}
       <MissionSection />
 
+      {/* View: Booth Promotion */}
+      <BoothPromotion />
+
       {/* View: Tickets Section */}
       <TicketsSection />
 
@@ -39,5 +43,5 @@ export default function App() {
       {/* View: Footer */}
       <Footer />
     </div>
-  )
+  );
 }

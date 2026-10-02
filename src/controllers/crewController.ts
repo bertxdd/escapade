@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase'
+import { ensureSupabaseClient } from '../lib/supabase'
 import type {
   Crew,
   LeaderboardEntry,
@@ -6,6 +6,8 @@ import type {
 } from '../models/crewModel'
 
 export const getCrews = async (): Promise<CrewWithEscapeTime[]> => {
+  const supabase = ensureSupabaseClient()
+
   const { data: crews, error: crewError } = await supabase
     .from('Crew')
     .select('*')
@@ -41,6 +43,7 @@ export const addCrew = async (
   crew_name: string,
   escape_time: number
 ) => {
+  const supabase = ensureSupabaseClient()
   const trimmedName = crew_name.trim()
 
   // Check if crew name already exists
@@ -104,6 +107,7 @@ export const updateCrew = async (
   crew_name: string,
   escape_time: number
 ) => {
+  const supabase = ensureSupabaseClient()
   const trimmedName = crew_name.trim()
 
   // Check if another crew already has this name
@@ -178,6 +182,8 @@ export const updateCrew = async (
 }
 
 export const deleteCrew = async (id: string) => {
+  const supabase = ensureSupabaseClient()
+
   const { error: leaderboardError } = await supabase
     .from('leaderboard')
     .delete()
