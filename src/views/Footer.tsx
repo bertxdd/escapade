@@ -45,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({
   contactEmail = 'gdg.usls@gmail.com',
   bgImageSrc = '/images/background.png',
   bannerText = 'ESCAPADE',
-  copyrightText = '© 2026 GDG On Campus - University of St. La Salle. All rights reserved.',
+  copyrightText = '© 2026 GDG On Campus USLS. All rights reserved.',
 }) => {
   return (
     <footer className="w-full text-white mt-auto border-t border-white/15 overflow-hidden font-['Orbitron',sans-serif]">
