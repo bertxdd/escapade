@@ -1,8 +1,9 @@
-import { supabase } from '../lib/supabase'
+import { ensureSupabaseClient } from '../lib/supabase'
 import type { LoginData } from '../models/authModel'
 
 export const loginUser = async ({ user_name, password }: LoginData) => {
   const username = user_name.trim()
+  const supabase = ensureSupabaseClient()
 
   const { data: admin, error } = await supabase
     .from('admin')

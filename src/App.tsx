@@ -3,6 +3,7 @@ import { Navbar } from './views/Navbar'
 import { HeroSection } from './views/HeroSection'
 import { StorySection } from './views/StorySection'
 import { MissionSection } from './views/MissionSection'
+import BoothPromotion from './components/BoothPromotion'
 import { TicketsSection } from './views/TicketsSection'
 import { LeaderboardSection } from './views/LeaderboardSection'
 import { Footer } from './views/Footer'
@@ -15,7 +16,6 @@ interface AppProps {
 export default function App({ adminLogin = false }: AppProps) {
   const controller = useLandingController()
 
- 
   return (
     <div className="min-h-screen bg-[#07090e] text-white flex flex-col font-sans selection:bg-white/30 selection:text-white">
       {/* View: Navbar with Tab Typewriter Animation */}
@@ -36,6 +36,9 @@ export default function App({ adminLogin = false }: AppProps) {
       {/* View: Mission Section */}
       <MissionSection />
 
+      {/* View: Booth Promotion */}
+      <BoothPromotion />
+
       {/* View: Tickets Section */}
       <TicketsSection />
 
@@ -44,8 +47,8 @@ export default function App({ adminLogin = false }: AppProps) {
 
       {/* View: Footer */}
       <Footer />
-      
-     {adminLogin && (
+
+      {adminLogin && (
         <AdminLoginModal
           onClose={() => {
             window.location.href = '/'
