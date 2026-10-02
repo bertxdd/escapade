@@ -84,7 +84,7 @@ export function HeroSection() {
             }}
             className="group relative inline-flex items-center justify-center px-8 py-3.5 sm:px-10 sm:py-4 rounded-full bg-black/40 border-2 border-white text-white font-orbitron font-extrabold text-sm sm:text-base tracking-wider uppercase shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white hover:shadow-[0_0_25px_rgba(255,255,255,0.45)] active:scale-95 cursor-pointer no-underline"
           >
-            MISSION BRIEFING
+            JOIN THE MISSION
           </a>
         </div>
       </div>

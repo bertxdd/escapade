@@ -12,7 +12,7 @@ import hudBottomLeft from "../assets/Group 3.png";
 import hudBottomRight from "../assets/Group 4.png";
 
 const STORY_TEXT =
-  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil non, maiores eum iusto, animi aspernatur doloribus, voluptate laborum minus in optio necessitatibus repellendus excepturi eius? Consequatur iste quo dolores dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum numquam nam ratione quod animi? Impedit similique laudantium aspernatur.";
+  "A sudden loud CLICK echoes through the air as the heavy door seals shut behind you. The pulse-pounding countdown begins. You and your team are trapped with zero time to waste and no obvious way out. Panic sets in, but survival depends on your sharp instincts. You must work together to uncover hidden clues, crack locked codes, and solve a series of heart-stopping puzzles before the relentless clock hits zero and locks you in forever.";
 
 // Intro (ms): the corners pan out, then the content fades in, then typing starts.
 const INTRO = { panMs: 1100, contentDelayMs: 900, contentFadeMs: 700 };
