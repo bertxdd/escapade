@@ -3,7 +3,6 @@ import { Navbar } from './views/Navbar'
 import { HeroSection } from './views/HeroSection'
 import { StorySection } from './views/StorySection'
 import { MissionSection } from './views/MissionSection'
-import BoothPromotion from './components/BoothPromotion'
 import { TicketsSection } from './views/TicketsSection'
 import { LeaderboardSection } from './views/LeaderboardSection'
 import { Footer } from './views/Footer'
@@ -36,8 +35,6 @@ export default function App({ adminLogin = false }: AppProps) {
       {/* View: Mission Section */}
       <MissionSection />
 
-      {/* View: Booth Promotion */}
-      <BoothPromotion />
 
       {/* View: Tickets Section */}
       <TicketsSection />
