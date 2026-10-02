@@ -1,15 +1,20 @@
-import { useLandingController } from './controllers/useLandingController';
-import { Navbar } from './views/Navbar';
-import { HeroSection } from './views/HeroSection';
-import { StorySection } from './views/StorySection';
-import { MissionSection } from './views/MissionSection';
-import BoothPromotion from './components/BoothPromotion';
-import { TicketsSection } from './views/TicketsSection';
-import { LeaderboardSection } from './views/LeaderboardSection';
-import { Footer } from './views/Footer';
+import { useLandingController } from './controllers/useLandingController'
+import { Navbar } from './views/Navbar'
+import { HeroSection } from './views/HeroSection'
+import { StorySection } from './views/StorySection'
+import { MissionSection } from './views/MissionSection'
+import BoothPromotion from './components/BoothPromotion'
+import { TicketsSection } from './views/TicketsSection'
+import { LeaderboardSection } from './views/LeaderboardSection'
+import { Footer } from './views/Footer'
+import AdminLoginModal from './components/AdminLoginModal'
 
-export default function App() {
-  const controller = useLandingController();
+interface AppProps {
+  adminLogin?: boolean
+}
+
+export default function App({ adminLogin = false }: AppProps) {
+  const controller = useLandingController()
 
   return (
     <div className="min-h-screen bg-[#07090e] text-white flex flex-col font-sans selection:bg-white/30 selection:text-white">
@@ -42,6 +47,14 @@ export default function App() {
 
       {/* View: Footer */}
       <Footer />
+
+      {adminLogin && (
+        <AdminLoginModal
+          onClose={() => {
+            window.location.href = '/'
+          }}
+        />
+      )}
     </div>
-  );
+  )
 }

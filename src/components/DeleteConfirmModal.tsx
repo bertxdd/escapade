@@ -20,32 +20,35 @@ const DeleteConfirmModal = ({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#080b0d] p-7 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#010206]/80 px-6 backdrop-blur-md">
+
+      <div className="relative w-full max-w-md rounded-2xl border border-white/15 bg-[#11151C]/90 p-7 shadow-[0_20px_60px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl">
+
         <div className="mb-6">
-          <h2 className="font-['Orbitron'] text-xl font-bold text-white">
+          <h2 className="font-['Orbitron'] text-xl font-bold text-[#FDFDFB]">
             Delete Crew
           </h2>
 
           <p className="mt-2 text-sm leading-6 text-gray-400">
             Are you sure you want to delete{' '}
-            <span className="font-semibold text-white">
+            <span className="font-semibold text-[#FDFDFB]">
               {crew.crew_name}
             </span>
             ?
           </p>
 
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-2 text-xs leading-5 text-gray-500">
             This will also delete the crew's escape time from the leaderboard.
             This action cannot be undone.
           </p>
         </div>
 
         <div className="flex gap-3">
+
           <button
             type="button"
             onClick={onClose}
-            className="w-full rounded-md border border-white/10 bg-white/5 px-5 py-3 font-['Space_Grotesk'] text-sm text-gray-300 transition hover:bg-white/10"
+            className="w-full rounded-md border border-white/10 bg-[#181D25]/50 px-5 py-3 font-['Space_Grotesk'] text-sm text-gray-300 transition hover:border-white/20 hover:bg-[#1D232D]/80 hover:text-[#FDFDFB]"
           >
             Cancel
           </button>
@@ -57,6 +60,7 @@ const DeleteConfirmModal = ({
           >
             Delete
           </button>
+
         </div>
       </div>
     </div>

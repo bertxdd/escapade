@@ -8,11 +8,11 @@ import type {
 } from './types'
 
 export const NAV_SECTIONS_MODEL: NavSection[] = [
-  { id: 'home', name: 'Home', href: '#home' },
-  { id: 'story', name: 'Story', href: '#story' },
-  { id: 'mission', name: 'Mission', href: '#mission' },
-  { id: 'tickets', name: 'Tickets', href: '#tickets' },
-  { id: 'leaderboard', name: 'Leaderboard', href: '#leaderboard' },
+  { id: 'home', name: 'Home', href: '/' },
+  { id: 'story', name: 'Story', href: '/story' },
+  { id: 'mission', name: 'Mission', href: '/mission' },
+  { id: 'tickets', name: 'Tickets', href: '/tickets' },
+  { id: 'leaderboard', name: 'Leaderboard', href: '/leaderboard' },
 ]
 
 export const EVENT_STATS_MODEL: EventStat[] = [

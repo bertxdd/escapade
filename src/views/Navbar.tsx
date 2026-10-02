@@ -58,13 +58,34 @@ export function Navbar({
  const displayedNavSections = dashboard
     ? navSections.filter((link) => link.id === 'home')
     : navSections
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: NavSection) => {
+    if (dashboard) return
+    e.preventDefault()
+    window.history.pushState(null, '', link.href)
+    const el = document.getElementById(link.id)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  const handleBrandClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (dashboard) return
+    e.preventDefault()
+    window.history.pushState(null, '', '/')
+    const el = document.getElementById('home')
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass-nav">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Left Brand: GDG Logo + Brand Titles (Pure White Text) */}
         <a
-          href="#home"
-          className="flex items-center gap-3.5 group text-left no-underline"
+          href="/"
+          onClick={handleBrandClick}
+          className="flex items-center gap-3.5 group text-left no-underline rainbow-hover-text"
         >
           <img
             src={gdgLogo}
@@ -89,8 +110,9 @@ export function Navbar({
               <a
                 key={link.id}
                 href={dashboard ? '/' : link.href} //allows the nav in dashboard goes back to home
-                className={`text-base sm:text-lg font-extrabold uppercase tracking-wider transition-opacity duration-300 py-1 ${
-                  isActive ? 'text-white opacity-100' : 'text-white opacity-80 hover:opacity-100'
+                onClick={(e) => handleNavClick(e, link)}
+                className={`rainbow-hover-text text-base sm:text-lg font-extrabold uppercase tracking-wider transition-opacity duration-300 py-1 ${
+                  isActive ? 'text-white opacity-100' : 'text-white opacity-80'
                 }`}
               >
                 <TypewriterText
@@ -143,8 +165,11 @@ export function Navbar({
             <a
               key={link.id}
               href={link.href}
-              onClick={onCloseMobileMenu}
-              className={`block font-orbitron text-base uppercase tracking-wider py-2 ${
+              onClick={(e) => {
+                onCloseMobileMenu()
+                handleNavClick(e, link)
+              }}
+              className={`rainbow-hover-text block font-orbitron text-base uppercase tracking-wider py-2 ${
                 activeSection === link.id ? 'text-white font-bold' : 'text-white/70'
               }`}
             >

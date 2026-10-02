@@ -16,6 +16,17 @@ export function useLandingController() {
 
   // Scroll listener controller logic
   useEffect(() => {
+    // Initial scroll on mount if path matches a section (e.g. /story)
+    const initialPath = window.location.pathname.replace('/', '')
+    if (initialPath && NAV_SECTIONS_MODEL.some((s) => s.id === initialPath)) {
+      setTimeout(() => {
+        const el = document.getElementById(initialPath)
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 100)
+    }
+
     const handleScroll = () => {
       const sectionIds = NAV_SECTIONS_MODEL.map((s) => s.id)
       const scrollPosition = window.scrollY + 200
@@ -27,6 +38,10 @@ export function useLandingController() {
           const height = el.offsetHeight
           if (scrollPosition >= top && scrollPosition < top + height) {
             setActiveSection(id)
+            const targetPath = id === 'home' ? '/' : `/${id}`
+            if (window.location.pathname !== targetPath) {
+              window.history.replaceState(null, '', targetPath)
+            }
             break
           }
         }

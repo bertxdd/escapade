@@ -95,3 +95,27 @@ body {
   background: #00f2ff;
 }
 
+/* Smooth moving lime-green to orange gradient effect on hover (Right to Left wider seamless loop) */
+.rainbow-hover-text {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.rainbow-hover-text:hover,
+.rainbow-hover-text:hover * {
+  background: linear-gradient(90deg, #ff5500 0%, #ffb700 12.5%, #8AEF26 25%, #ffb700 37.5%, #ff5500 50%, #ffb700 62.5%, #8AEF26 75%, #ffb700 87.5%, #ff5500 100%);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow-slide 8s linear infinite;
+}
+
+@keyframes rainbow-slide {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: -200% 0%;
+  }
+}
+
