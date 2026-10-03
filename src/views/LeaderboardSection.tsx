@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import starsBg from "../assets/strrrs.png";
 import stopwatchIcon from "../assets/stopwatch.png";
 import { ScrollReveal } from "../components/ScrollReveal";
+import { useParallaxBg } from "../hooks/useParallaxBg";
 import { getCrews } from "../controllers/crewController";
 import type { CrewWithEscapeTime } from "../models/crewModel";
 
@@ -54,7 +55,7 @@ export function LeaderboardSection() {
       rowStyle: {
         backgroundColor: "rgba(254, 250, 9, 0.2)", 
         borderColor: "#FEFA09",
-        borderWidth: "2px",
+        borderWidth: "1px",
         borderStyle: "solid",
         boxShadow: "0px 15px 40px 0px rgba(242, 194, 0, 0.2)",
       }
@@ -71,7 +72,7 @@ export function LeaderboardSection() {
       rowStyle: {
         backgroundColor: "rgba(177, 179, 181, 0.3)", 
         borderColor: "#A0A0A0",
-        borderWidth: "2px",
+        borderWidth: "1px",
         borderStyle: "solid",
       }
     },
@@ -87,7 +88,7 @@ export function LeaderboardSection() {
       rowStyle: {
         backgroundColor: "rgba(205, 127, 50, 0.2)", 
         borderColor: "#9E7B4F",
-        borderWidth: "2px",
+        borderWidth: "1px",
         borderStyle: "solid",
         boxShadow: "0px 15px 40px 0px rgba(158, 123, 79, 0.2)", 
       }
@@ -104,7 +105,7 @@ export function LeaderboardSection() {
       rowStyle: {
         backgroundColor: "rgba(7, 20, 102, 0.2)", 
         borderColor: "rgba(7, 20, 102, 0.5)",
-        borderWidth: "2px",
+        borderWidth: "1px",
         borderStyle: "solid",
       }
     },
@@ -120,7 +121,7 @@ export function LeaderboardSection() {
       rowStyle: {
         backgroundColor: "rgba(7, 20, 102, 0.2)", 
         borderColor: "rgba(7, 20, 102, 0.5)",
-        borderWidth: "2px",
+        borderWidth: "1px",
         borderStyle: "solid",
       }
     },
@@ -135,13 +136,25 @@ export function LeaderboardSection() {
     };
   });
 
+  const sectionRef = useParallaxBg<HTMLElement>();
+
   return (
     <section
+      ref={sectionRef}
       id="leaderboard"
       style={{ backgroundImage: `url(${starsBg})` }}
-      className="min-h-screen flex flex-col items-center py-24 sm:py-32 px-4 sm:px-8 border-t border-white/10 text-white bg-cover bg-center bg-no-repeat"
+      className="relative min-h-screen flex flex-col items-center py-24 sm:py-32 px-4 sm:px-8 border-t border-white/10 text-white bg-cover bg-center bg-no-repeat leaderboard-section"
     >
-      <div className="w-full max-w-4xl flex flex-col items-center">
+      <style>{`
+        @media (min-width: 768px) {
+          .leaderboard-section { background-attachment: fixed; }
+        }
+      `}</style>
+
+      {/* Dark overlay between bg and content */}
+      <div className="absolute inset-0 bg-[rgba(5,8,6,0.20)] pointer-events-none z-0" aria-hidden="true" />
+
+      <div className="w-full max-w-4xl flex flex-col items-center relative z-10">
         {/* Animated Heading */}
         <ScrollReveal>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-orbitron font-extrabold text-white uppercase tracking-widest mb-12 text-center">
@@ -186,17 +199,17 @@ export function LeaderboardSection() {
                   >
                     <div className="flex items-center gap-12 sm:gap-16">
                       {/* Rank */}
-                      <span className={`w-16 text-center font-space-grotesk font-bold ${item.rankSize} ${item.textClass}`}>
+                      <span className={`w-16 text-center font-orbitron font-bold ${item.rankSize} ${item.textClass}`}>
                         {item.rank}
                       </span>
                       {/* Crew Name - Now uses dedicated item.crewSize */}
-                      <span className={`font-space-grotesk font-medium tracking-wide ${item.crewSize} ${item.textClass}`}>
+                      <span className={`font-orbitron font-medium tracking-wide ${item.crewSize} ${item.textClass}`}>
                         {item.team}
                       </span>
                     </div>
                     
                     {/* Time - Now uses dedicated item.timeSize */}
-                    <div className={`flex items-center gap-2 sm:gap-3 font-space-grotesk font-medium tracking-wide ${item.timeSize} ${item.textClass}`}>
+                    <div className={`flex items-center gap-2 sm:gap-3 font-orbitron font-medium tracking-wide ${item.timeSize} ${item.textClass}`}>
                       {/* Dynamic Stopwatch Mask */}
                       <div 
                         className={`${item.iconSize} ${item.iconClass} [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center]`}

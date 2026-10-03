@@ -8,47 +8,73 @@ export function MissionSection() {
       className="mission-root relative isolate overflow-hidden text-white"
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Michroma&family=Space+Grotesk:wght@400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Michroma&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
         .mission-root {
           font-family: 'Space Grotesk', sans-serif;
           font-weight: 500;
-          background-color: #0a0e08;
-          background-image:
-            radial-gradient(ellipse at 50% 40%, rgba(57, 255, 20, 0.05), transparent 60%),
-            linear-gradient(180deg, rgba(10,14,8,0.97) 0%, rgba(10,14,8,0.82) 40%, rgba(10,14,8,0.95) 100%);
-          padding: 100px 20px 120px;
-          min-height: 115vh;
+          background-color: #050806;
+          padding: 60px 16px 80px;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+        }
+
+        /* ─── Layer 1: Background image ─── */
+        .mission-bg-layer {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          background-image: url('/images-board/MISSION_BG.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          pointer-events: none;
+        }
+
+        /* ─── Layer 2: Dark layer ─── */
+        .mission-dark-layer {
+          position: absolute;
+          inset: 0;
+          z-index: 10;
+          background: linear-gradient(
+            180deg,
+            rgba(5, 8, 6, 0.97) 0%,
+            rgba(5, 8, 6, 0.88) 35%,
+            rgba(5, 8, 6, 0.88) 65%,
+            rgba(5, 8, 6, 0.97) 100%
+          );
+          pointer-events: none;
+        }
+
+        /* ─── Layer 3: Texts and Design ─── */
+        .mission-content-layer {
+          position: relative;
+          z-index: 20;
+          width: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
         }
 
-        /* ─── Background texture ─── */
-        .mission-root::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          z-index: -1;
-          background-image: url('/images-board/background.png');
-          background-size: cover;
-          background-position: center;
-          opacity: 0.12;
-          pointer-events: none;
-        }
-
-        /* ─── HUD outer frame – corner brackets ─── */
+        /* ─── Outer HUD corner brackets ─── */
         .mission-hud-frame {
           position: absolute;
-          inset: 20px;
+          top: -30px;
+          bottom:-30px;
+          left: 0px;
+          right: 0px;
           pointer-events: none;
-          z-index: 2;
+          z-index: 22;
         }
         .mission-hud-frame .corner {
           position: absolute;
-          width: 36px;
-          height: 36px;
+          width: clamp(24px, 4vw, 36px);
+          height: clamp(24px, 4vw, 36px);
           border-color: #5FBF3F;
         }
         .mission-hud-frame .corner.tl { top: 0; left: 0; border-left: 2px solid; border-top: 2px solid; }
@@ -59,189 +85,296 @@ export function MissionSection() {
         /* ─── Top center notch ─── */
         .mission-notch {
           position: absolute;
-          top: 20px;
+          top: clamp(6px, 1.2vw, 12px);
           left: 50%;
           transform: translateX(-50%);
-          width: 220px;
+          width: clamp(160px, 25vw, 220px);
           height: 18px;
           pointer-events: none;
-          z-index: 3;
+          z-index: 22;
         }
         .mission-notch svg {
           width: 100%;
           height: 100%;
         }
 
-        /* ─── HUD data corners ─── */
-        .mission-hud-data {
-          position: absolute;
+        /* ─── Container wrapping HUD text and Square Text Box ─── */
+        .mission-wrapper {
+          position: relative;
+          width: min(680px, 92vw);
+          margin: 0 auto;
+          z-index: 25;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        /* ─── HUD Readouts on top and below the text box ─── */
+        .mission-hud-row {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          width: 100%;
+          pointer-events: none;
+          z-index: 26;
+        }
+        .mission-hud-row.top {
+          margin-bottom: 10px;
+        }
+        .mission-hud-row.bottom {
+          margin-top: -100px; /* Pulls crew slots, nav, and virus block UP */
+          align-items: flex-end;
+          position: relative;
+          z-index: 30;
+        }
+
+        .mission-hud-text {
           font-family: 'Orbitron', sans-serif;
           font-weight: 800;
-          font-size: 9px;
-          letter-spacing: 0.1em;
+          font-size: clamp(9px, 1.1vw, 11px);
+          letter-spacing: 0.12em;
           text-transform: uppercase;
-          line-height: 1.6;
-          z-index: 4;
+          line-height: 1.5;
+          color: rgba(95, 191, 63, 0.85);
+          white-space: nowrap;
+        }
+        .mission-hud-text.center {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: 0;
+          text-align: center;
+        }
+        .mission-hud-text.right {
+          text-align: right;
+        }
+
+        .mission-signal-weak {
+          animation: mission-transmission-blink 1.8s steps(1) infinite;
+        }
+
+        /* ─── Virus Image overlapping the text box on top of ILOVEYOU Virus Spreading ─── */
+        .mission-virus-block {
+          position: relative;
+          z-index: 30;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          text-align: right;
+          margin-top: -65px; /* Pulls virus image up to overlap with the bottom of the text box */
           pointer-events: none;
         }
-        .mission-hud-data.top-left { top: 44px; left: 40px; color: rgba(95, 191, 63, 0.8); }
-        .mission-hud-data.top-right { top: 44px; right: 40px; text-align: right; color: rgba(95, 191, 63, 0.8); }
-        .mission-hud-data.bottom-left { bottom: 40px; left: 40px; color: rgba(95, 191, 63, 0.8); }
-        .mission-hud-data.bottom-center { bottom: 40px; left: 50%; transform: translateX(-50%); color: rgba(95, 191, 63, 0.8); }
-        .mission-hud-data.bottom-right { bottom: 40px; right: 40px; color: #A91B1B; }
 
-        @media (min-width: 768px) {
-          .mission-hud-data { font-size: 11px; }
-          .mission-hud-data.top-left { top: 54px; left: 60px; }
-          .mission-hud-data.top-right { top: 54px; right: 60px; }
-          .mission-hud-data.bottom-left { bottom: 50px; left: 60px; }
-          .mission-hud-data.bottom-right { bottom: 50px; right: 60px; }
+        .mission-virus-icon {
+          width: 200px;
+          height: auto;
+          position: relative; 
+          bottom: -30px;
+          margin: 0;
+          filter: drop-shadow(0 0 12px rgba(255, 42, 42, 0.85));
+          animation: virus-icon-glitch 2.6s steps(1) infinite;
         }
 
-        /* ─── Inner content panel ─── */
+        .mission-virus-text {
+          position: relative;
+          top: 15px;   /* ↓ positive = down, negative = up */
+          left: -5px;  /* → positive = right, negative = left */
+          font-family: 'Orbitron', sans-serif;
+          font-weight: 800;
+          font-size: clamp(9px, 1.1vw, 11px);
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #FF2A2A;
+          animation: virus-text-glitch 3.2s steps(1) infinite;
+        }
+
+        /* ─── Inner square content panel (transparent, no dark layer in text box) ─── */
         .mission-panel {
           position: relative;
-          width: min(860px, 100%);
+          width: 100%;
+          aspect-ratio: 1 / 1;
           margin: 0 auto;
           border: 1px solid rgba(95, 191, 63, 0.45);
-          border-radius: 4px;
-          background: rgba(10, 18, 12, 0.82);
-          backdrop-filter: blur(8px);
-          padding: 54px 32px 48px;
+          border-radius: 6px;
+          background: transparent;
+          backdrop-filter: none;
+          padding: clamp(20px, 3.5vw, 34px) clamp(18px, 3.5vw, 36px);
           text-align: center;
-          z-index: 5;
-          box-shadow: 0 0 35px rgba(10, 18, 12, 0.9), inset 0 0 20px rgba(95, 191, 63, 0.05);
+          z-index: 35;
+          box-shadow: none;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          box-sizing: border-box;
         }
-        @media (min-width: 768px) {
+
+        @media (max-width: 480px) {
           .mission-panel {
-            padding: 72px 64px 60px;
+            aspect-ratio: auto;
+            min-height: 540px;
           }
         }
 
-        /* ─── Eyebrow (Red Incoming Transmission) ─── */
+        /* ─── Eyebrow (Red Incoming Transmission with Blinking) ─── */
         .mission-eyebrow {
-          display: inline-flex;
+          display: flex;
           align-items: center;
+          justify-content: center;
           gap: 8px;
+          width: 100%;
           font-family: 'Orbitron', sans-serif;
           font-weight: 700;
-          font-size: 11px;
+          font-size: clamp(10px, 1.3vw, 12px);
           letter-spacing: 0.2em;
           text-transform: uppercase;
+          transform: translateY(-50px);
           color: #FF2A2A;
-          margin-bottom: 24px;
-          text-shadow: 0 0 10px rgba(255, 42, 42, 0.4);
+          margin-bottom: 8px;
+          animation: mission-transmission-blink 1.8s steps(1) infinite;
         }
         .mission-eyebrow .dot {
           width: 8px;
           height: 8px;
           border-radius: 50%;
           background: #FF2A2A;
-          box-shadow: 0 0 8px #FF2A2A, 0 0 16px rgba(255,42,42,0.6);
-          animation: mission-blink 1.4s steps(1) infinite;
+          box-shadow: 0 0 10px #FF2A2A, 0 0 20px rgba(255, 42, 42, 0.8);
+          display: inline-block;
+          flex-shrink: 0;
         }
 
-        /* ─── Title gradient (red → gold with scanlines) ─── */
+        /* ─── Title with Glitch Animation (Always below eyebrow) ─── */
         .mission-title {
+          display: block;
+          width: 100%;
+          text-align: center;
           font-family: 'Orbitron', sans-serif;
           font-weight: 900;
-          font-size: clamp(34px, 7.5vw, 76px);
-          line-height: 1.05;
-          margin: 0 0 28px;
+          font-size: clamp(26px, 4.5vw, 46px);
+          line-height: 1.08;
+          top: -40px;
+          margin: 0 0 10px;
           background: linear-gradient(90deg, #d63031, #e17055 30%, #fdcb6e 65%, #fbc531 100%);
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          filter: drop-shadow(0 0 16px rgba(253,203,110,0.35));
+          filter: drop-shadow(0 0 16px rgba(253, 203, 110, 0.35));
           position: relative;
-        }
-        .mission-title::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: repeating-linear-gradient(
-            to bottom,
-            transparent 0, transparent 3px,
-            rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.12) 4px
-          );
-          pointer-events: none;
-          mix-blend-mode: multiply;
+          animation: mission-title-glitch 4.5s infinite;
         }
 
-        /* ─── Description text (Glowing Blue + Yellow Highlight) ─── */
+        /* ─── Description text (In front of the hologram in the middle) ─── */
         .mission-desc {
-          max-width: 620px;
-          margin: 0 auto 12px;
+          position: relative;
+          z-index: 10;
+          max-width: 540px;
+          margin: 0 auto;
           font-family: 'Space Grotesk', sans-serif;
           font-weight: 500;
-          font-size: 15px;
-          line-height: 1.7;
+          font-size: clamp(12.5px, 1.6vw, 15px);
+          line-height: 1.6;
           color: #7EE8F5;
-          text-shadow: 0 0 12px rgba(126, 232, 245, 0.3);
-        }
-        @media (min-width: 768px) {
-          .mission-desc { font-size: 17px; }
+          text-shadow: 0 0 14px rgba(126, 232, 245, 0.5), 0 2px 10px rgba(0, 0, 0, 0.95);
         }
 
         .mission-highlight {
           display: block;
-          margin-top: 12px;
+          margin-top: 6px;
           font-family: 'Orbitron', sans-serif;
           font-weight: 700;
-          font-size: 13px;
+          font-size: clamp(11.5px, 1.4vw, 13px);
           letter-spacing: 0.04em;
           color: #FDCB6E;
-          text-shadow: 0 0 12px rgba(253, 203, 110, 0.45);
-        }
-        @media (min-width: 768px) {
-          .mission-highlight { font-size: 14px; }
+          text-shadow: 0 0 14px rgba(253, 203, 110, 0.6), 0 2px 10px rgba(0, 0, 0, 0.95);
         }
 
-        /* ─── Hologram image container & spinning animation ─── */
-        .mission-holo-img-wrap {
-          position: relative;
-          width: min(100%, 340px);
-          height: 280px;
-          margin: 36px auto 28px;
+        /* ─── Hologram Backdrop Stage (Behind the text) ─── */
+        .mission-hologram-stage {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
-          perspective: 800px;
-        }
-        @media (min-width: 768px) {
-          .mission-holo-img-wrap {
-            width: min(100%, 420px);
-            height: 350px;
-            margin: 44px auto 36px;
-          }
+          pointer-events: none;
+          z-index: 1;
+          overflow: hidden;
+          border-radius: 6px;
         }
 
-        .mission-holo-img {
+        /* mission_holo_2 (Pedestal + light cone at the base) */
+        .mission-holo-base {
+          position: absolute;
+          bottom: 100px;                        /* Positioned at the bottom of the square box */
+          left: 50%;
+          transform: translateX(-50%);
           width: 100%;
-          height: 100%;
+          max-width: 520px;
+          height: auto;
+          max-height: 320px;
           object-fit: contain;
-          filter: drop-shadow(0 0 25px rgba(126, 232, 245, 0.7));
-          animation: mission-spin-3d 9s linear infinite;
-          transform-style: preserve-3d;
+          z-index: 1;
+          opacity: 0.85;
         }
 
-        @keyframes mission-spin-3d {
+        /* mission_holo (Hologram GIF in the center / middle behind the text) */
+        .mission-holo-projection {
+          position: absolute;
+          top: 38%;                            /* Centered vertically behind headers and description */
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: clamp(500px, 34vw, 340px);
+          height: clamp(500px, 34vw, 340px);
+          object-fit: contain;
+          z-index: 2;
+          opacity: 0.82;
+          animation: mission-holo-float 3.5s ease-in-out infinite;
+        }
+
+        /* ─── Circular glow behind the GIF ─── */
+        .mission-holo-glow {
+          position: absolute;
+          top: 38%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: clamp(400px, 46vw, 540px);
+          height: clamp(400px, 46vw, 540px);
+          border-radius: 50%;
+          background: radial-gradient(
+            circle,
+            rgba(126, 232, 245, 0.5) 0%,
+            rgba(57, 255, 20, 0.22) 40%,
+            rgba(126, 232, 245, 0.1) 60%,
+            transparent 75%
+          );
+          filter: blur(28px);
+          z-index: 1;
+          pointer-events: none;
+          animation: mission-glow-pulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes mission-glow-pulse {
           0% {
-            transform: perspective(800deg) rotateY(0deg);
+            transform: translate(-50%, -50%) scale(0.92);
+            opacity: 0.75;
           }
           100% {
-            transform: perspective(800deg) rotateY(360deg);
+            transform: translate(-50%, -50%) scale(1.08);
+            opacity: 1;
           }
         }
 
-        /* ─── Info flanking / below hologram ─── */
+        /* ─── Info row ─── */
         .mission-info-row {
           display: flex;
           align-items: center;
           justify-content: space-around;
-          gap: 24px;
-          margin-top: 24px;
-          margin-bottom: 32px;
+          gap: 16px;
+          width: 100%;
+          max-width: 500px;
+          margin-top: 2px;
+          margin-bottom: 4px;
         }
         .mission-info-block {
           text-align: center;
@@ -250,198 +383,305 @@ export function MissionSection() {
         .mission-info-label {
           font-family: 'Orbitron', sans-serif;
           font-weight: 700;
-          font-size: 12px;
+          font-size: clamp(10px, 1.2vw, 11px);
           letter-spacing: 0.1em;
           text-transform: uppercase;
           color: #39FF14;
-          margin-bottom: 6px;
+          margin-bottom: 2px;
           text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
         }
         .mission-info-value {
           font-family: 'Space Grotesk', sans-serif;
           font-weight: 600;
-          font-size: 15px;
+          font-size: clamp(12px, 1.4vw, 14px);
           color: #fff;
           letter-spacing: 0.05em;
-        }
-        @media (min-width: 768px) {
-          .mission-info-label { font-size: 14px; }
-          .mission-info-value { font-size: 17px; }
         }
 
         /* ─── Accept Mission button ─── */
         .mission-cta {
           display: inline-flex;
           align-items: center;
-          gap: 10px;
-          padding: 14px 42px;
+          justify-content: center;
+          padding: 10px 32px;
           font-family: 'Orbitron', sans-serif;
           font-weight: 700;
-          font-size: 14px;
+          font-size: clamp(11px, 1.3vw, 13px);
           letter-spacing: 0.12em;
           text-transform: uppercase;
           color: #39FF14;
-          background: rgba(57, 255, 20, 0.03);
-          border: 2px solid #39FF14;
+          background: rgba(57, 255, 20, 0.04);
+          border: 1.5px solid #39FF14;
           border-radius: 4px;
           cursor: pointer;
           text-decoration: none;
           transition: all 0.25s ease;
           position: relative;
           box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+          margin-top: 4px;
         }
         .mission-cta:hover {
-          background: rgba(57, 255, 20, 0.15);
-          box-shadow: 0 0 25px rgba(57,255,20,0.4), inset 0 0 14px rgba(57,255,20,0.15);
+          background: rgba(57, 255, 20, 0.18);
+          box-shadow: 0 0 25px rgba(57, 255, 20, 0.45), inset 0 0 14px rgba(57, 255, 20, 0.15);
           transform: translateY(-2px) scale(1.03);
         }
-        .mission-cta .cta-pip {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          background: #7EE8F5;
-          box-shadow: 0 0 8px #7EE8F5;
-        }
 
-        /* ─── Virus network overlay ─── */
-        .mission-virus-overlay {
+        /* ─── Virus Image constantly at bottom right of mission section (5x bigger) ─── */
+        .mission-section-virus {
           position: absolute;
-          bottom: 0;
-          right: 0;
-          width: clamp(200px, 38vw, 480px);
-          height: clamp(200px, 38vw, 480px);
-          z-index: 1;
+          bottom: clamp(8px, 2vw, 20px);
+          right: clamp(12px, 2.5vw, 24px);
+          width: clamp(150px, 18vw, 220px);
+          height: auto;
+          object-fit: contain;
           pointer-events: none;
-          opacity: 0.65;
-          animation: mission-glitch 5s steps(1, end) infinite;
+          z-index: 24;
+          filter: drop-shadow(0 0 16px rgba(255, 42, 42, 0.85));
+          animation: virus-icon-glitch 2.6s steps(1) infinite;
         }
 
-        /* ─── Keyframes ─── */
-        @keyframes mission-blink { 0%,60% { opacity: 1; } 61%,100% { opacity: 0.2; } }
-        @keyframes mission-glitch {
-          0%,93%,100% { transform: translateX(0); opacity: 0.65; }
-          94% { transform: translateX(-2px); opacity: 0.3; }
-          96% { transform: translateX(2px); opacity: 0.75; }
+        /* ─── Keyframe Animations ─── */
+        @keyframes mission-transmission-blink {
+          0%, 55% {
+            opacity: 1;
+            filter: drop-shadow(0 0 8px rgba(255, 42, 42, 0.7));
+          }
+          56%, 100% {
+            opacity: 0.2;
+            filter: none;
+          }
+        }
+
+        @keyframes mission-title-glitch {
+          0%, 84%, 100% {
+            transform: translate(0, 0) skew(0deg);
+            filter: drop-shadow(0 0 16px rgba(253, 203, 110, 0.35));
+          }
+          85% {
+            transform: translate(-3px, 1px) skew(-1.5deg);
+            filter: drop-shadow(-3px 0 #FF0055) drop-shadow(3px 0 #00FFFF);
+          }
+          87% {
+            transform: translate(3px, -1px) skew(1.5deg);
+            filter: drop-shadow(3px 0 #FF0055) drop-shadow(-3px 0 #00FFFF);
+          }
+          89% {
+            transform: translate(-2px, 0);
+            filter: drop-shadow(-2px 0 #39FF14);
+          }
+          91% {
+            transform: translate(0, 0) skew(0deg);
+            filter: drop-shadow(0 0 16px rgba(253, 203, 110, 0.35));
+          }
+          94% {
+            transform: translate(2px, 1px);
+            filter: drop-shadow(2px 0 #FF2A2A) drop-shadow(-2px 0 #7EE8F5);
+          }
+          96% {
+            transform: translate(0, 0);
+          }
+        }
+
+        @keyframes virus-icon-glitch {
+          0%, 78%, 100% {
+            transform: translate(0, 0) scale(1);
+            filter: drop-shadow(0 0 16px rgba(255, 42, 42, 0.85));
+          }
+          79% {
+            transform: translate(-5px, 2px) scale(1.06) skew(-3deg);
+            filter: drop-shadow(-5px 0 #00FFFF) drop-shadow(5px 0 #FF0055);
+          }
+          82% {
+            transform: translate(5px, -2px) scale(0.96) skew(3deg);
+            filter: drop-shadow(5px 0 #00FFFF) drop-shadow(-5px 0 #FF0055);
+          }
+          85% {
+            transform: translate(-2px, 3px) scale(1.03);
+            filter: drop-shadow(0 0 22px rgba(255, 42, 42, 1));
+          }
+          88% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.35;
+          }
+          91% {
+            opacity: 1;
+          }
+        }
+
+        @keyframes virus-text-glitch {
+          0%, 80%, 100% {
+            transform: translate(0, 0);
+            color: #FF2A2A;
+            text-shadow: 0 0 8px rgba(255, 42, 42, 0.6);
+          }
+          81% {
+            transform: translate(-2px, 1px) skew(-2deg);
+            color: #00FFFF;
+            text-shadow: 2px 0 #FF0055, -2px 0 #00FFFF;
+          }
+          83% {
+            transform: translate(2px, -1px) skew(2deg);
+            color: #FF0055;
+            text-shadow: -2px 0 #00FFFF;
+          }
+          85% {
+            transform: translate(-1px, 0);
+            color: #FF2A2A;
+            text-shadow: 0 0 14px rgba(255, 42, 42, 0.9);
+          }
+          87% {
+            transform: translate(0, 0);
+            opacity: 0.35;
+          }
+          89% {
+            opacity: 1;
+          }
+        }
+
+        @keyframes mission-holo-float {
+          0%, 100% {
+            transform: translate(-50%, -50%) translateY(0);
+          }
+          50% {
+            transform: translate(-50%, -50%) translateY(-6px);
+          }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .mission-holo-img,
-          .mission-virus-overlay, .mission-eyebrow .dot { animation: none !important; }
+          .mission-title,
+          .mission-eyebrow,
+          .mission-section-virus,
+          .mission-virus-text,
+          .mission-holo-projection {
+            animation: none !important;
+          }
         }
       `}</style>
 
-      {/* ─── HUD Corner Brackets ─── */}
-      <div className="mission-hud-frame" aria-hidden="true">
-        <span className="corner tl" />
-        <span className="corner tr" />
-        <span className="corner bl" />
-        <span className="corner br" />
-      </div>
+      {/* ─── LAYER 1: Mission_BG (Bottom) ─── */}
+      <div className="mission-bg-layer" aria-hidden="true" />
 
-      {/* ─── Top Center Notch ─── */}
-      <div className="mission-notch" aria-hidden="true">
-        <svg viewBox="0 0 220 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0 L66 0 L78 16 L142 16 L154 0 L220 0" stroke="#5FBF3F" strokeWidth="2" fill="none" />
-        </svg>
-      </div>
+      {/* ─── LAYER 2: Dark layer (Middle) ─── */}
+      <div className="mission-dark-layer" aria-hidden="true" />
 
-      {/* ─── HUD Data Readouts ─── */}
-      <div className="mission-hud-data top-left" aria-hidden="true">
-        SECTOR 07<br /><span style={{ animation: 'mission-blink 1.4s steps(1) infinite' }}>SIGNAL: WEAK</span>
-      </div>
-      <div className="mission-hud-data top-right" aria-hidden="true">
-        X 10.6767<br />Y 122.0927
-      </div>
-      <div className="mission-hud-data bottom-left" aria-hidden="true">
-        CREW SLOTS 2-4<br />HULL 62%
-      </div>
-      <div className="mission-hud-data bottom-center hidden md:block" aria-hidden="true">
-        NAV // TAU CETI SERVER
-      </div>
-      <div className="mission-hud-data bottom-right" aria-hidden="true" style={{ animation: 'mission-glitch 5s steps(1, end) infinite' }}>
-        !! ILOVEYOU VIRUS SPREADING
-      </div>
-
-      {/* ─── Virus Network Overlay ─── */}
-      <svg className="mission-virus-overlay" viewBox="0 0 450 450" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        {/* Red network lines */}
-        <line x1="350" y1="0" x2="300" y2="150" stroke="#C62828" strokeWidth="4" />
-        <line x1="300" y1="150" x2="400" y2="250" stroke="#C62828" strokeWidth="4" />
-        <line x1="400" y1="250" x2="450" y2="200" stroke="#C62828" strokeWidth="4" />
-        <line x1="300" y1="150" x2="200" y2="280" stroke="#C62828" strokeWidth="3.5" />
-        <line x1="200" y1="280" x2="320" y2="380" stroke="#C62828" strokeWidth="4" />
-        <line x1="320" y1="380" x2="450" y2="420" stroke="#C62828" strokeWidth="4" />
-        <line x1="200" y1="280" x2="250" y2="400" stroke="#C62828" strokeWidth="3" />
-        {/* Orange network lines */}
-        <line x1="0" y1="280" x2="120" y2="200" stroke="#E67E22" strokeWidth="3.5" />
-        <line x1="120" y1="200" x2="200" y2="280" stroke="#E67E22" strokeWidth="3" />
-        <line x1="400" y1="250" x2="450" y2="280" stroke="#E67E22" strokeWidth="3" />
-        <line x1="170" y1="340" x2="100" y2="400" stroke="#E67E22" strokeWidth="3" />
-        {/* Red nodes */}
-        <rect x="95" y="145" width="10" height="10" fill="#C62828" />
-        <rect x="245" y="170" width="8" height="8" fill="#C62828" />
-        <rect x="195" y="275" width="12" height="12" fill="#C62828" />
-        <rect x="310" y="375" width="14" height="14" fill="#C62828" />
-        <rect x="350" y="330" width="8" height="8" fill="#C62828" />
-        <rect x="410" y="415" width="16" height="16" fill="#C62828" />
-        <rect x="260" y="390" width="6" height="6" fill="#C62828" />
-        {/* Orange nodes */}
-        <rect x="180" y="200" width="10" height="10" fill="#E67E22" />
-        <rect x="290" y="230" width="12" height="12" fill="#E67E22" />
-        <rect x="355" y="315" width="10" height="10" fill="#E67E22" />
-        <rect x="145" y="290" width="8" height="8" fill="#E67E22" />
-      </svg>
-
-      {/* ─── Main Content Panel ─── */}
-      <ScrollReveal>
-        <div className="mission-panel">
-          {/* Eyebrow (Red) */}
-          <div className="mission-eyebrow">
-            <span className="dot" />
-            INCOMING TRANSMISSION
-          </div>
-
-          {/* Title */}
-          <h2 id="mission-heading" className="mission-title">
-            HAIL MARY.EXE
-          </h2>
-
-          {/* Description (Glowing Blue text + Yellow Highlight) */}
-          <p className="mission-desc">
-            Viruses are eating Gideon's home. He needs a crew. Grab 2 to 4 friends
-            and board the ship. You've got 15 minutes before the monsters get loud.
-            <span className="mission-highlight">
-              Fastest 5 crews win a prize from Crazy Krunch.
-            </span>
-          </p>
-
-          {/* Spinning Hologram Image */}
-          <div className="mission-holo-img-wrap">
-            <img
-              src="/images-board/hologram.png"
-              alt="Glowing blue hologram pedestal emitting light beam"
-              className="mission-holo-img"
-            />
-          </div>
-
-          {/* Info row: Destination + Mission Window */}
-          <div className="mission-info-row">
-            <div className="mission-info-block">
-              <p className="mission-info-label">DESTINATION:</p>
-              <p className="mission-info-value">SECTOR MM37</p>
-            </div>
-            <div className="mission-info-block">
-              <p className="mission-info-label">MISSION WINDOW:</p>
-              <p className="mission-info-value">OCTOBER 5-9, 2026</p>
-            </div>
-          </div>
-
-          {/* CTA Button */}
-          <a href="#tickets" className="mission-cta">
-            ACCEPT MISSION
-          </a>
+      {/* ─── LAYER 3: Texts and Design (Top) ─── */}
+      <div className="mission-content-layer">
+        {/* Outer HUD Corner Brackets */}
+        <div className="mission-hud-frame" aria-hidden="true">
+          <span className="corner tl" />
+          <span className="corner tr" />
+          <span className="corner bl" />
+          <span className="corner br" />
         </div>
-      </ScrollReveal>
+
+        {/* Top Center Notch */}
+        <div className="mission-notch" aria-hidden="true">
+          <svg viewBox="0 0 220 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0 L66 0 L78 16 L142 16 L154 0 L220 0" stroke="#5FBF3F" strokeWidth="2" fill="none" />
+          </svg>
+        </div>
+
+        {/* Main Content Container with Fixed Top & Bottom Corner Text */}
+        <ScrollReveal>
+          <div className="mission-wrapper">
+            {/* Top HUD Readouts (Fixed directly on top of the text box) */}
+            <div className="mission-hud-row top" aria-hidden="true">
+              <div className="mission-hud-text">
+                SECTOR 07<br />
+                <span className="mission-signal-weak">SIGNAL: WEAK</span>
+              </div>
+              <div className="mission-hud-text right">
+                X 10.6767<br />Y 122.0927
+              </div>
+            </div>
+
+            {/* Square Text Box (Transparent, no dark layer in text box) */}
+            <div className="mission-panel">
+              {/* Hologram Stage (Behind text, centered in the box) */}
+              <div className="mission-hologram-stage" aria-hidden="true">
+                {/* Circular Glow behind the GIF */}
+                <div className="mission-holo-glow" />
+
+                {/* Base Projector Light (mission_holo_2) */}
+                <img
+                  src="/images-board/MISSION_HOLO_2.png"
+                  alt="Hologram projector base"
+                  className="mission-holo-base"
+                />
+                {/* Hologram Projection GIF (mission_holo) */}
+                <img
+                  src="/images-board/MISSION_HOLO.gif"
+                  alt="Hologram projection"
+                  className="mission-holo-projection"
+                />
+              </div>
+
+              {/* Center Content Group: Headers & Description in front and in the middle of the GIF */}
+              <div className="flex flex-col items-center w-full my-auto relative z-10 -translate-y-20">
+                {/* Eyebrow (Red Incoming Transmission with Blinking Animation) */}
+                <div className="mission-eyebrow">
+                  <span className="dot" />
+                  <span>INCOMING TRANSMISSION</span>
+                </div>
+
+                {/* Title with Glitch Animation */}
+                <h2 id="mission-heading" className="mission-title">
+                  HAIL MARY.EXE
+                </h2>
+
+                {/* Description (Glowing Blue text + Yellow Highlight on top of hologram) */}
+                <p className="mission-desc">
+                  Viruses are eating Gideon&apos;s home. He needs a crew. Grab 2 to 4 friends
+                  and board the ship. You&apos;ve got 15 minutes before the monsters get loud.
+                  <span className="mission-highlight">
+                    Fastest 5 crews win a prize from Crazy Krunch.
+                  </span>
+                </p>
+              </div>
+
+              {/* Bottom Controls Group: Info row + CTA Button */}
+              <div className="flex flex-col items-center w-full relative z-10">
+                <div className="mission-info-row">
+                  <div className="mission-info-block">
+                    <p className="mission-info-label">DESTINATION:</p>
+                    <p className="mission-info-value">SECTOR MM37</p>
+                  </div>
+                  <div className="mission-info-block">
+                    <p className="mission-info-label">MISSION WINDOW:</p>
+                    <p className="mission-info-value">OCTOBER 5-9, 2026</p>
+                  </div>
+                </div>
+
+                {/* CTA Button (no circle pip) */}
+                <a href="#tickets" className="mission-cta">
+                  ACCEPT MISSION
+                </a>
+              </div>
+            </div>
+
+            {/* Bottom HUD Readouts (Fixed directly below the text box) */}
+            <div className="mission-hud-row bottom" aria-hidden="true">
+              <div className="mission-hud-text">
+                CREW SLOTS 2-4<br />HULL 62%
+              </div>
+              <div className="mission-hud-text center hidden sm:block">
+                NAV // TAU CETI SERVER
+              </div>
+              <div className="mission-virus-block">
+                <img
+                  src="/images-board/virus.png"
+                  alt="Virus"
+                  className="mission-virus-icon"
+                />
+                <span className="mission-virus-text">!! ILOVEYOU VIRUS SPREADING</span>
+              </div>
+            </div>
+          </div>
+        </ScrollReveal>
+      </div>
     </section>
   )
 }
+
+
+

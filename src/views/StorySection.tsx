@@ -582,12 +582,31 @@ export function StorySection() {
   const titleWidth = sprites?.title.size.w ?? 1;
   const revealPct = letters === 0 ? 0 : (letterEdges[letters - 1] / titleWidth) * 100;
 
+  // Mobile parallax: shift background-position-y on scroll.
+  // Desktop (≥768px) already gets parallax via CSS `background-attachment: fixed`.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let raf = 0;
+    const STRENGTH = 80;
+    const update = () => {
+      if (window.innerWidth >= 768) return;
+      const rect = el.getBoundingClientRect();
+      const progress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / (window.innerHeight + rect.height)));
+      el.style.backgroundPositionY = `calc(50% + ${(progress - 0.5) * STRENGTH}px)`;
+    };
+    const onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf); };
+  }, [ref]);
+
   return (
     <section
       ref={ref}
       id="story"
       data-entered={entered}
-      className="story-section"
+      className="story-section px-4 sm:px-8 py-24 md:py-32"
       style={{
         ...cssVars,
         backgroundImage: `linear-gradient(to bottom, rgba(7,9,14,0.5), rgba(7,9,14,0.95)), url(${storyBg})`,
@@ -730,7 +749,7 @@ const STYLES = `
   min-height: 100vh;
   max-width: 720px;
   margin: 0 auto;
-  padding: 112px 24px 96px; /* top/bottom clear the corner brackets */
+  padding: 0;
 }
 .story-mascot { order: 1; position: relative; display: flex; justify-content: center; }
 .story-text   { order: 2; display: flex; flex-direction: column; gap: 24px; }

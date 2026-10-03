@@ -48,10 +48,10 @@ export function HeroSection() {
 
       <div className="relative max-w-5xl mx-auto text-center space-y-8 z-30 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
         <h1 className="font-orbitron font-extrabold tracking-tighter uppercase leading-none text-white drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
-          <span className="block text-white text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black tracking-normal mb-2 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
+          <span className="block text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-normal mb-2 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
             TORCH IGNITES,
           </span>
-          <span className="block text-white text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black tracking-normal mb-2 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
+          <span className="block text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-normal mb-2 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
             THE WORLD UNITES
           </span>
         </h1>
