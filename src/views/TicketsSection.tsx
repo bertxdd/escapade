@@ -4,7 +4,7 @@ export function TicketsSection() {
   return (
     <section
       id="tickets"
-      className="min-h-[70vh] flex flex-col items-center justify-center p-4 sm:p-8 border-t border-white/10 text-white text-center bg-[url('/images-board/background.png')] bg-cover bg-center bg-no-repeat relative"
+      className="flex flex-col items-center px-4 sm:px-8 py-24 md:py-32 border-t border-white/10 text-white text-center bg-[url('/images-board/background.png')] bg-cover bg-center bg-no-repeat relative"
     >
       {/* Section Heading */}
       <ScrollReveal>
@@ -20,11 +20,15 @@ export function TicketsSection() {
           {/* Left Main Column */}
           <main className="grid grid-rows-[auto_1fr_auto_auto] border-b lg:border-b-0 lg:border-r border-[#3d2330]">
             
-            {/* Header */}
-            <header className="w-full px-6 py-4 sm:px-8 sm:py-6 border-b border-[#3d2330] text-base sm:text-2xl md:text-3xl font-light tracking-[3px] sm:tracking-[8px] flex items-center justify-between bg-[#060509]/80 backdrop-blur-xs uppercase">
-              <span>AGAINST ALL ODDS:</span>
-              <span className="text-[#f23c3c]">ESCAPADE</span>
-            </header>
+          {/* Header */}
+              <header className="w-full px-6 py-4 sm:px-8 sm:py-6 border-b border-[#3d2330] text-base sm:text-2xl md:text-3xl font-light tracking-[3px] sm:tracking-[8px] flex items-center justify-between bg-[#060509]/80 backdrop-blur-xs uppercase shadow-[0_0_20px_rgba(242,60,60,0.15)]">
+                <span className="[text-shadow:0_0_8px_rgba(255,255,255,0.6),0_0_16px_rgba(255,255,255,0.3)]">
+                  AGAINST ALL ODDS:
+                </span>
+                <span className="text-[#f23c3c] [text-shadow:0_0_10px_#f23c3c,0_0_20px_#f23c3c,0_0_35px_rgba(242,60,60,0.8)]">
+                  ESCAPADE
+                </span>
+              </header>
 
             {/* Ticket Stage */}
             <section className="p-6 sm:p-[30px] flex items-center justify-center border-b border-[#3d2330] bg-[#0a080e]/40 min-h-[280px]">
@@ -59,7 +63,7 @@ export function TicketsSection() {
                 </span>
               </div>
 
-              {/* Php 30.00 (BOLD) */}
+              {/* Php 30.00 */}
               <div className="p-4 sm:p-[28px_20px] sm:border-t border-[#3d2330] flex items-center justify-center text-center bg-[#07060a]/30">
                 <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-black tracking-[3px] sm:tracking-[6px] uppercase text-white whitespace-nowrap">
                   Php 30.00
