@@ -123,23 +123,71 @@ const Dashboard = () => {
   }
 
   const formatEscapeTime = (totalSeconds: number | null) => {
-  if (totalSeconds === null) {
-    return '—'
+    if (totalSeconds === null) {
+      return '—'
+    }
+
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+
+    return `${minutes}m ${String(seconds).padStart(2, '0')}s`
   }
 
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
+  const [sortField, setSortField] = useState<
+    'crew_name' | 'created_at' | 'escape_time'
+  >('created_at')
 
-  return `${minutes}m ${String(seconds).padStart(2, '0')}s`
-}
-  
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
+
+  const handleSort = (
+    field: 'crew_name' | 'created_at' | 'escape_time'
+  ) => {
+    if (sortField === field) {
+      setSortDirection((current) =>
+        current === 'asc' ? 'desc' : 'asc'
+      )
+    } else {
+      setSortField(field)
+      setSortDirection('asc')
+    }
+  }
+
+  const sortedCrews = useMemo(() => {
+    return [...filteredCrews].sort((a, b) => {
+      let comparison = 0
+
+      if (sortField === 'crew_name') {
+        comparison = a.crew_name.localeCompare(b.crew_name)
+      }
+
+      if (sortField === 'created_at') {
+        comparison =
+          new Date(a.created_at).getTime() -
+          new Date(b.created_at).getTime()
+      }
+
+      if (sortField === 'escape_time') {
+        const aTime = a.escape_time ?? Infinity
+        const bTime = b.escape_time ?? Infinity
+
+        comparison = aTime - bTime
+      }
+
+      return sortDirection === 'asc'
+        ? comparison
+        : -comparison
+    })
+  }, [filteredCrews, sortField, sortDirection])
+
+
+    
 
   return (
     <div
         className="relative min-h-screen bg-cover bg-center bg-fixed text-white flex flex-col"
         style={{ backgroundImage: `url(${dashboardBg})` }}
     >
-    <div className="absolute inset-0 bg-black/70" />
+    <div className="absolute inset-0 bg-black/90" />
     <div className="relative z-10 flex min-h-screen flex-col">
     <main className="flex-1">
         <Navbar
@@ -159,7 +207,7 @@ const Dashboard = () => {
         )}
 
         <div className="mb-8 grid gap-6 lg:grid-cols-3">
-
+{/* crew count */}
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6">
             <p className="font-['Michroma'] text-xs tracking-wider text-gray-500">
               TOTAL CREWS
@@ -169,16 +217,16 @@ const Dashboard = () => {
               {crews.length}
             </p>
           </div>
-
-          <div className="rounded-xl border border-[#8AEF26]/20 bg-[#8AEF26]/5 p-6 lg:col-span-2">
-            <p className="font-['Michroma'] text-xs tracking-wider text-[#8AEF26]">
+{/* top 1 */}
+          <div className="rounded-xl border border-white/15 bg-[#11151C]/70 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl lg:col-span-2">
+            <p className="font-['Michroma'] text-xs tracking-wider text-gray-400">
               TOP 1
             </p>
 
             {leaderboard.length > 0 ? (
               <div className="mt-3 flex items-center justify-between">
                 <div>
-                  <h2 className="font-['Orbitron'] text-2xl font-bold">
+                  <h2 className="font-['Orbitron'] text-2xl font-bold text-[#FDFDFB]">
                     {leaderboard[0].crew_name}
                   </h2>
 
@@ -188,7 +236,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="text-right">
-                  <p className="font-['Orbitron'] text-3xl font-bold text-[#8AEF26]">
+                  <p className="font-['Orbitron'] text-3xl font-bold text-[#FDFDFB]">
                     {formatEscapeTime(leaderboard[0].escape_time)}
                   </p>
                 </div>
@@ -204,6 +252,7 @@ const Dashboard = () => {
         <div className="grid gap-8 lg:grid-cols-3">
           <section className="lg:col-span-2">
 
+{/* crew table */}
             <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <h2 className="font-['Orbitron'] text-lg font-bold">
@@ -222,7 +271,7 @@ const Dashboard = () => {
                         placeholder="Search crew..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white outline-none placeholder:text-gray-500 focus:border-[#8AEF26]"
+                        className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white outline-none placeholder:text-gray-500 focus:border-[#FDFDFB]"
                     />
                     </div>
 
@@ -231,7 +280,7 @@ const Dashboard = () => {
                         setEditingCrew(null)
                         setModalOpen(true)
                     }}
-                    className="shrink-0 rounded-md bg-[#8AEF26] px-5 py-2.5 font-['Space_Grotesk'] text-sm font-semibold text-black transition hover:bg-[#76d91d]"
+                    className="shrink-0 rounded-md bg-[#FDFDFB] px-5 py-2.5 font-['Space_Grotesk'] text-sm font-semibold text-[#010206] transition hover:bg-[#FFFDEE]"
                     >
                     + Add Crew
                     </button>
@@ -245,16 +294,49 @@ const Dashboard = () => {
 
                   <thead className="border-b border-white/10 bg-white/[0.03]">
                     <tr>
-                      <th className="px-5 py-4 font-['Michroma'] text-xs tracking-wider text-gray-500">
-                        CREW
+                      <th className="px-5 py-4">
+                        <button
+                          type="button"
+                          onClick={() => handleSort('crew_name')}
+                          className="font-['Michroma'] text-xs tracking-wider text-gray-500 transition hover:text-[#FDFDFB]"
+                        >
+                          CREW
+                          {sortField === 'crew_name' && (
+                            <span className="ml-2">
+                              {sortDirection === 'asc' ? '↑' : '↓'}
+                            </span>
+                          )}
+                        </button>
                       </th>
 
-                      <th className="px-5 py-4 font-['Michroma'] text-xs tracking-wider text-gray-500">
-                        CREATED
+                      <th className="px-5 py-4">
+                        <button
+                          type="button"
+                          onClick={() => handleSort('created_at')}
+                          className="font-['Michroma'] text-xs tracking-wider text-gray-500 transition hover:text-[#FDFDFB]"
+                        >
+                          CREATED
+                          {sortField === 'created_at' && (
+                            <span className="ml-2">
+                              {sortDirection === 'asc' ? '↑' : '↓'}
+                            </span>
+                          )}
+                        </button>
                       </th>
 
-                      <th className="px-5 py-4 font-['Michroma'] text-xs tracking-wider text-gray-500">
-                        ESCAPE TIME
+                      <th className="px-5 py-4">
+                        <button
+                          type="button"
+                          onClick={() => handleSort('escape_time')}
+                          className="font-['Michroma'] text-xs tracking-wider text-gray-500 transition hover:text-[#FDFDFB]"
+                        >
+                          ESCAPE TIME
+                          {sortField === 'escape_time' && (
+                            <span className="ml-2">
+                              {sortDirection === 'asc' ? '↑' : '↓'}
+                            </span>
+                          )}
+                        </button>
                       </th>
 
                       <th className="px-5 py-4 text-right font-['Michroma'] text-xs tracking-wider text-gray-500">
@@ -283,7 +365,7 @@ const Dashboard = () => {
                         </td>
                       </tr>
                     ) : (
-                      filteredCrews.map((crew) => (
+                      sortedCrews.map((crew) => (
                         <tr
                           key={crew.id}
                           className="border-b border-white/5 transition hover:bg-white/[0.03]"
@@ -300,9 +382,11 @@ const Dashboard = () => {
 
                           <td className="px-5 py-4">
                             {crew.escape_time !== null ? (
-                              <span className="font-['Orbitron'] text-sm text-[#8AEF26]">
-                                {formatEscapeTime(crew.escape_time)}
-                              </span>
+                              <div className="inline-flex items-center rounded-md border border-white/10 bg-[#181D25]/70 px-3 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                                <span className="font-['Orbitron'] text-xs font-bold tracking-wide text-[#FDFDFB]">
+                                  {formatEscapeTime(crew.escape_time)}
+                                </span>
+                              </div>
                             ) : (
                               <span className="text-sm text-gray-500">
                                 —
@@ -318,7 +402,7 @@ const Dashboard = () => {
                                   setEditingCrew(crew)
                                   setModalOpen(true)
                                 }}
-                                className="rounded-md border border-white/10 px-3 py-2 text-xs text-gray-300 transition hover:border-[#8AEF26]/50 hover:text-[#8AEF26]"
+                                className="rounded-md border border-white/10 px-3 py-2 text-xs text-gray-300 transition hover:border-white/30 hover:text-[#FDFDFB]"
                               >
                                 Edit
                               </button>
@@ -344,6 +428,7 @@ const Dashboard = () => {
             </div>
           </section>
 
+{/* leaderboard section */}
           <section>
             <div className="mb-5">
               <h2 className="font-['Orbitron'] text-lg font-bold">
@@ -365,17 +450,17 @@ const Dashboard = () => {
                 leaderboard.map((crew, index) => (
                   <div
                     key={crew.id}
-                    className={`flex items-center gap-4 rounded-xl border p-4 ${
+                    className={`flex items-center gap-4 rounded-xl border p-4 backdrop-blur-xl ${
                       index === 0
-                        ? 'border-[#8AEF26]/30 bg-[#8AEF26]/5'
-                        : 'border-white/10 bg-white/[0.02]'
+                        ? 'border-white/15 bg-[#11151C]/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]'
+                        : 'border-white/10 bg-white/[0.03]'
                     }`}
                   >
                     <div
                       className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-['Orbitron'] text-sm font-bold ${
-                        index === 0
-                          ? 'bg-[#8AEF26] text-black'
-                          : 'bg-white/5 text-gray-400'
+                      index === 0
+                        ? 'bg-[#FDFDFB] text-[#010206]'
+                        : 'bg-white/5 text-gray-400'
                       }`}
                     >
                       {index + 1}
@@ -391,9 +476,11 @@ const Dashboard = () => {
                       </p>
                     </div>
 
-                    <p className="font-['Orbitron'] text-sm font-bold text-[#8AEF26]">
-                      {formatEscapeTime(crew.escape_time)}
-                    </p>
+                    <div className="shrink-0 rounded-md border border-white/10 bg-[#181D25]/70 px-3 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                      <p className="font-['Orbitron'] text-xs font-bold tracking-wide text-[#FDFDFB]">
+                        {formatEscapeTime(crew.escape_time)}
+                      </p>
+                    </div>
                   </div>
                 ))
               )}

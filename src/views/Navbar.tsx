@@ -85,7 +85,7 @@ export function Navbar({
         <a
           href="/"
           onClick={handleBrandClick}
-          className="flex items-center gap-3.5 group text-left no-underline"
+          className="flex items-center gap-3.5 group text-left no-underline rainbow-hover-text"
         >
           <img
             src={gdgLogo}
@@ -111,8 +111,8 @@ export function Navbar({
                 key={link.id}
                 href={dashboard ? '/' : link.href} //allows the nav in dashboard goes back to home
                 onClick={(e) => handleNavClick(e, link)}
-                className={`text-base sm:text-lg font-extrabold uppercase tracking-wider transition-opacity duration-300 py-1 ${
-                  isActive ? 'text-white opacity-100' : 'text-white opacity-80 hover:opacity-100'
+                className={`rainbow-hover-text text-base sm:text-lg font-extrabold uppercase tracking-wider transition-opacity duration-300 py-1 ${
+                  isActive ? 'text-white opacity-100' : 'text-white opacity-80'
                 }`}
               >
                 <TypewriterText
@@ -169,7 +169,7 @@ export function Navbar({
                 onCloseMobileMenu()
                 handleNavClick(e, link)
               }}
-              className={`block font-orbitron text-base uppercase tracking-wider py-2 ${
+              className={`rainbow-hover-text block font-orbitron text-base uppercase tracking-wider py-2 ${
                 activeSection === link.id ? 'text-white font-bold' : 'text-white/70'
               }`}
             >

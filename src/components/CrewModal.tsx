@@ -33,7 +33,9 @@ const CrewModal = ({
     }
   }, [crew])
 
-const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: SyntheticEvent<HTMLFormElement>
+  ) => {
     e.preventDefault()
 
     if (!crewName.trim()) {
@@ -67,12 +69,13 @@ const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#080b0d] p-7 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#010206]/80 px-6 backdrop-blur-md">
+
+      <div className="relative w-full max-w-md rounded-2xl border border-white/15 bg-[#11151C]/90 p-7 shadow-[0_20px_60px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl">
 
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2 className="font-['Orbitron'] text-xl font-bold text-white">
+            <h2 className="font-['Orbitron'] text-xl font-bold text-[#FDFDFB]">
               {crew ? 'Edit Crew' : 'Add Crew'}
             </h2>
 
@@ -86,15 +89,18 @@ const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
           <button
             type="button"
             onClick={onClose}
-            className="text-xl text-gray-500 transition hover:text-white"
+            className="text-2xl leading-none text-gray-500 transition hover:text-[#FDFDFB]"
+            aria-label="Close modal"
           >
             ×
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+        >
 
-          {/* Crew Name */}
           <div>
             <label className="mb-2 block font-['Michroma'] text-xs tracking-wider text-gray-300">
               Crew Name
@@ -105,11 +111,10 @@ const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
               value={crewName}
               onChange={(e) => setCrewName(e.target.value)}
               placeholder="Enter crew name"
-              className="w-full rounded-md border border-white/15 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-[#8AEF26] focus:ring-1 focus:ring-[#8AEF26]"
+              className="w-full rounded-md border border-white/10 bg-[#181D25]/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-[#1D232D]/80 focus:ring-1 focus:ring-white/10"
             />
           </div>
 
-          {/* Escape Time */}
           <div>
             <label className="mb-2 block font-['Michroma'] text-xs tracking-wider text-gray-300">
               Escape Time
@@ -117,7 +122,6 @@ const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
 
             <div className="grid grid-cols-2 gap-3">
 
-              {/* Minutes */}
               <div>
                 <input
                   type="number"
@@ -126,7 +130,7 @@ const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
                   value={minutes}
                   onChange={(e) => setMinutes(e.target.value)}
                   placeholder="Minutes"
-                  className="w-full rounded-md border border-white/15 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-[#8AEF26] focus:ring-1 focus:ring-[#8AEF26]"
+                  className="w-full rounded-md border border-white/10 bg-[#181D25]/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-[#1D232D]/80 focus:ring-1 focus:ring-white/10"
                 />
 
                 <p className="mt-1 text-xs text-gray-500">
@@ -134,7 +138,6 @@ const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
                 </p>
               </div>
 
-              {/* Seconds */}
               <div>
                 <input
                   type="number"
@@ -144,7 +147,7 @@ const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
                   value={seconds}
                   onChange={(e) => setSeconds(e.target.value)}
                   placeholder="Seconds"
-                  className="w-full rounded-md border border-white/15 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-[#8AEF26] focus:ring-1 focus:ring-[#8AEF26]"
+                  className="w-full rounded-md border border-white/10 bg-[#181D25]/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-[#1D232D]/80 focus:ring-1 focus:ring-white/10"
                 />
 
                 <p className="mt-1 text-xs text-gray-500">
@@ -155,13 +158,12 @@ const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
             </div>
           </div>
 
-          {/* Buttons */}
           <div className="flex gap-3 pt-2">
 
             <button
               type="button"
               onClick={onClose}
-              className="w-full rounded-md border border-white/10 bg-white/5 px-5 py-3 font-['Space_Grotesk'] text-sm text-gray-300 transition hover:bg-white/10"
+              className="w-full rounded-md border border-white/10 bg-white/5 px-5 py-3 font-['Space_Grotesk'] text-sm text-gray-300 transition hover:border-white/20 hover:bg-white/10 hover:text-[#FDFDFB]"
             >
               Cancel
             </button>
@@ -169,7 +171,7 @@ const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-md bg-[#8AEF26] px-5 py-3 font-['Space_Grotesk'] text-sm font-semibold text-black transition hover:bg-[#76d91d] disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-md bg-[#FDFDFB] px-5 py-3 font-['Space_Grotesk'] text-sm font-semibold text-[#010206] transition hover:bg-[#FFFDEE] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? 'Saving...' : 'Save Crew'}
             </button>

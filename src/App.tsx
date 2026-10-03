@@ -6,8 +6,13 @@ import { MissionSection } from './views/MissionSection'
 import { TicketsSection } from './views/TicketsSection'
 import { LeaderboardSection } from './views/LeaderboardSection'
 import { Footer } from './views/Footer'
+import AdminLoginModal from './components/AdminLoginModal'
 
-export default function App() {
+interface AppProps {
+  adminLogin?: boolean
+}
+
+export default function App({ adminLogin = false }: AppProps) {
   const controller = useLandingController()
 
   return (
@@ -30,6 +35,7 @@ export default function App() {
       {/* View: Mission Section */}
       <MissionSection />
 
+
       {/* View: Tickets Section */}
       <TicketsSection />
 
@@ -38,6 +44,14 @@ export default function App() {
 
       {/* View: Footer */}
       <Footer />
+
+      {adminLogin && (
+        <AdminLoginModal
+          onClose={() => {
+            window.location.href = '/'
+          }}
+        />
+      )}
     </div>
   )
 }

@@ -3,6 +3,14 @@ import hero1 from '../assets/HERO_1.png'
 import hero2 from '../assets/HERO_2.png'
 
 export function HeroSection() {
+  const handleNavigate = (path: string, elementId: string) => {
+    window.history.pushState(null, '', path)
+    const el = document.getElementById(elementId)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <section
       id="home"
@@ -54,6 +62,31 @@ export function HeroSection() {
          <p className="max-w-2xl mx-auto text-white text-xs sm:text-sm md:text-base lg:text-xl font-orbitron font-light leading-relaxed drop-shadow-[0_8px_20px_rgba(0,0,0,0.9)]">
           Will your team be fast enough to save it?
         </p>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 pt-2">
+          <a
+            href="/story"
+            onClick={(e) => {
+              e.preventDefault()
+              handleNavigate('/story', 'story')
+            }}
+            className="group relative inline-flex items-center justify-center px-8 py-3.5 sm:px-10 sm:py-4 rounded-full bg-black/90 border border-white/20 text-white font-orbitron font-extrabold text-sm sm:text-base tracking-wider uppercase shadow-xl transition-all duration-300 hover:scale-105 hover:bg-black hover:border-white/60 hover:shadow-[0_0_25px_rgba(255,255,255,0.35)] active:scale-95 cursor-pointer no-underline"
+          >
+            BOARD THE SHIP
+          </a>
+
+          <a
+            href="/mission"
+            onClick={(e) => {
+              e.preventDefault()
+              handleNavigate('/mission', 'mission')
+            }}
+            className="group relative inline-flex items-center justify-center px-8 py-3.5 sm:px-10 sm:py-4 rounded-full bg-black/40 border-2 border-white text-white font-orbitron font-extrabold text-sm sm:text-base tracking-wider uppercase shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white hover:shadow-[0_0_25px_rgba(255,255,255,0.45)] active:scale-95 cursor-pointer no-underline"
+          >
+            JOIN THE MISSION
+          </a>
+        </div>
       </div>
     </section>
   )
