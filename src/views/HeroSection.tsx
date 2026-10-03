@@ -1,4 +1,4 @@
-import heroBg from '../assets/HERO_BG.jpg'
+import heroBg from '../assets/space_bg2.jpg'
 import hero1 from '../assets/HERO_1.png'
 import hero2 from '../assets/HERO_2.png'
 

@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { useLandingController } from './controllers/useLandingController'
+import { LandingOverlay } from './views/LandingOverlay'
 import { Navbar } from './views/Navbar'
 import { HeroSection } from './views/HeroSection'
 import { StorySection } from './views/StorySection'
@@ -14,9 +16,14 @@ interface AppProps {
 
 export default function App({ adminLogin = false }: AppProps) {
   const controller = useLandingController()
+  const [showLanding, setShowLanding] = useState(true)
 
   return (
     <div className="min-h-screen bg-[#07090e] text-white flex flex-col font-sans selection:bg-white/30 selection:text-white">
+      {/* Landing Page Overlay */}
+      {showLanding && (
+        <LandingOverlay onEnter={() => setShowLanding(false)} />
+      )}
       {/* View: Navbar with Tab Typewriter Animation */}
       <Navbar
         navSections={controller.navSections}

@@ -43,20 +43,13 @@ const DEFAULT_SOCIALS: SocialLink[] = [
 export const Footer: React.FC<FooterProps> = ({
   socials = DEFAULT_SOCIALS,
   contactEmail = 'gdg.usls@gmail.com',
-  bgImageSrc = '/images/background.png',
   bannerText = 'ESCAPADE',
   copyrightText = '© 2026 GDG On Campus USLS. All rights reserved.',
 }) => {
   return (
-    <footer className="w-full text-white mt-auto border-t border-white/15 overflow-hidden font-['Orbitron',sans-serif]">
+    <footer className="w-full text-white mt-auto border-t border-white/15 overflow-hidden font-['Orbitron',sans-serif] bg-black">
       {/* Top Banner & Main Content Section */}
-      <div
-        className="relative bg-cover bg-center bg-no-repeat bg-[#090b10] px-8 py-16 md:px-20 md:py-20 lg:px-24 flex flex-col md:flex-row items-center justify-between gap-8 border-b border-white/10 before:content-[''] before:absolute before:inset-0 before:bg-black/60 before:backdrop-blur-[2px] before:z-[1]"
-        style={{ backgroundImage: `url('${bgImageSrc}')` }}
-      >
-        {/* Glow ambient effect */}
-        <div className="absolute z-[1] w-80 h-80 bg-gradient-to-tr from-[#00f2ff]/10 via-[#00ff88]/10 to-[#aa3bff]/10 rounded-full blur-3xl pointer-events-none left-1/2 -translate-x-1/2" />
-
+      <div className="relative bg-black px-8 py-16 md:px-20 md:py-20 lg:px-24 flex flex-col md:flex-row items-center justify-between gap-8 border-b border-white/10">
         {/* Left Side: Logo & Brand */}
         <div className="relative z-[2] flex items-center gap-4 shrink-0">
           <a
@@ -90,7 +83,7 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="relative z-[2] flex flex-wrap items-center justify-center md:justify-end gap-4 shrink-0">
           <a
             href={`mailto:${contactEmail}?subject=Inquiry%20-%20Escapade`}
-            className="text-white bg-white/[0.06] border border-white/20 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider no-underline transition-all duration-300 inline-flex items-center justify-center whitespace-nowrap hover:bg-white hover:text-[#0c0b10] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:-translate-y-0.5"
+            className="text-white bg-black border border-white/20 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider no-underline transition-all duration-300 inline-flex items-center justify-center whitespace-nowrap hover:bg-zinc-900 hover:text-white hover:border-orange-500/50 hover:shadow-[0_0_20px_rgba(255,107,0,0.35)] hover:-translate-y-0.5"
           >
             CONTACT US!
           </a>
@@ -99,7 +92,7 @@ export const Footer: React.FC<FooterProps> = ({
               <a
                 key={social.label}
                 href={social.href}
-                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/[0.06] border border-white/15 p-2.5 flex items-center justify-center no-underline overflow-hidden transition-all duration-300 hover:scale-110 hover:bg-white/15 hover:border-white/40 hover:shadow-[0_0_15px_rgba(0,242,255,0.3)]"
+                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-black border border-white/20 p-2.5 flex items-center justify-center no-underline overflow-hidden transition-all duration-300 hover:scale-110 hover:bg-zinc-900 hover:border-orange-500/50 hover:shadow-[0_0_15px_rgba(255,107,0,0.4)]"
                 aria-label={social.label}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -116,7 +109,7 @@ export const Footer: React.FC<FooterProps> = ({
       </div>
 
       {/* Giant Bottom Text Banner */}
-      <div className="bg-[#07090e] w-full py-6 md:py-8 overflow-hidden flex justify-center items-center border-t border-white/5">
+      <div className="bg-black w-full py-6 md:py-8 overflow-hidden flex justify-center items-center border-t border-white/5">
         <h1 className="text-[13vw] font-black text-transparent bg-clip-text bg-gradient-to-b from-[#8d929f]/40 to-[#8d929f]/10 uppercase leading-[0.85] select-none text-center whitespace-nowrap w-screen block m-0 tracking-tighter">
           {bannerText}
         </h1>

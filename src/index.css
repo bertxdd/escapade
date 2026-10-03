@@ -78,6 +78,17 @@ body {
 }
 
 /* Custom Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) #07090e;
+  transition: scrollbar-color 0.3s ease;
+}
+
+*:hover,
+*:active {
+  scrollbar-color: #ff7700 #07090e;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -87,12 +98,19 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 4px;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00f2ff;
+  background: #ff7700;
+  box-shadow: 0 0 10px rgba(255, 119, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #ff5500;
+  box-shadow: 0 0 14px rgba(255, 85, 0, 0.8);
 }
 
 /* Smooth moving lime-green to orange gradient effect on hover (Right to Left wider seamless loop) */
