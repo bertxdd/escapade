@@ -16,20 +16,31 @@ const CrewModal = ({
   const [crewName, setCrewName] = useState('')
   const [minutes, setMinutes] = useState('')
   const [seconds, setSeconds] = useState('')
+  const [milliseconds, setMilliseconds] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (crew) {
       setCrewName(crew.crew_name)
 
-      const totalSeconds = crew.escape_time ?? 0
+      const totalMilliseconds = crew.escape_time ?? 0
 
-      setMinutes(String(Math.floor(totalSeconds / 60)))
-      setSeconds(String(totalSeconds % 60))
+      const minuteValue = Math.floor(totalMilliseconds / 60000)
+      const secondValue = Math.floor(
+        (totalMilliseconds % 60000) / 1000
+      )
+      const centisecondValue = Math.floor(
+        (totalMilliseconds % 1000) / 10
+      )
+
+      setMinutes(String(minuteValue))
+      setSeconds(String(secondValue))
+      setMilliseconds(String(centisecondValue))
     } else {
       setCrewName('')
       setMinutes('')
       setSeconds('')
+      setMilliseconds('')
     }
   }, [crew])
 
@@ -44,24 +55,29 @@ const CrewModal = ({
 
     const minuteValue = Number(minutes || 0)
     const secondValue = Number(seconds || 0)
+    const millisecondValue = Number(milliseconds || 0)
 
     if (
       !Number.isInteger(minuteValue) ||
       !Number.isInteger(secondValue) ||
-      minuteValue < 0 ||
-      secondValue < 0 ||
-      secondValue > 59
+      !Number.isInteger(millisecondValue) ||
+        minuteValue < 0 ||
+        secondValue < 0 || secondValue > 59 ||
+        millisecondValue < 0 || millisecondValue > 99
+      
     ) {
       return
     }
 
-    const totalSeconds =
-      minuteValue * 60 + secondValue
+    const totalMilliseconds =
+      minuteValue * 60000 +
+      secondValue * 1000 +
+      millisecondValue * 10
 
     setLoading(true)
 
     try {
-      await onSave(crewName, totalSeconds)
+      await onSave(crewName, totalMilliseconds)
       onClose()
     } finally {
       setLoading(false)
@@ -152,6 +168,23 @@ const CrewModal = ({
 
                 <p className="mt-1 text-xs text-gray-500">
                   Seconds (0–59)
+                </p>
+              </div>
+
+               <div>
+                <input
+                  type="number"
+                  min="0"
+                  max="99"
+                  step="1"
+                  value={milliseconds}
+                  onChange={(e) => setMilliseconds(e.target.value)}
+                  placeholder="Milliseconds"
+                  className="w-full rounded-md border border-white/10 bg-[#181D25]/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-[#1D232D]/80 focus:ring-1 focus:ring-white/10"
+                />
+
+                <p className="mt-1 text-xs text-gray-500">
+                  Milliseconds (0–999)
                 </p>
               </div>
 
