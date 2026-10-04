@@ -184,7 +184,7 @@ const CrewModal = ({
                 />
 
                 <p className="mt-1 text-xs text-gray-500">
-                  Milliseconds (0–999)
+                  Milliseconds (0–99)
                 </p>
               </div>
 
