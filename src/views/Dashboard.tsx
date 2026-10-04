@@ -66,6 +66,7 @@ const Dashboard = () => {
           (a.escape_time ?? Infinity) -
           (b.escape_time ?? Infinity)
       )
+      .slice(0, 5)
   }, [crews])
 
   const handleSave = async (
@@ -122,15 +123,22 @@ const Dashboard = () => {
     return new Date(date).toLocaleString()
   }
 
-  const formatEscapeTime = (totalSeconds: number | null) => {
-    if (totalSeconds === null) {
+  const formatEscapeTime = (totalMilliseconds: number | null) => {
+    if (totalMilliseconds === null) {
       return '—'
     }
 
-    const minutes = Math.floor(totalSeconds / 60)
-    const seconds = totalSeconds % 60
+    const minutes = Math.floor(totalMilliseconds / 60000)
 
-    return `${minutes}m ${String(seconds).padStart(2, '0')}s`
+    const seconds = Math.floor(
+      (totalMilliseconds % 60000) / 1000
+    )
+
+    const milliseconds = Math.floor(
+      (totalMilliseconds % 1000) / 10
+    )
+
+    return `${minutes}m ${String(seconds).padStart(2, '0')}s ${String(milliseconds).padStart(2, '0')}ms`
   }
 
   const [sortField, setSortField] = useState<
@@ -287,12 +295,12 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.02]">
+            <div className="overflow-hidden rounded-xl border border-white/10 bg-[#11151C]/70">
 
-              <div className="overflow-x-auto">
+              <div className="max-h-[calc(115vh-480px)] overflow-auto">
                 <table className="w-full min-w-[700px] text-left">
 
-                  <thead className="border-b border-white/10 bg-white/[0.03]">
+                  <thead className="sticky top-0 z-10 border-b border-white/10 bg-[#11151C]">
                     <tr>
                       <th className="px-5 py-4">
                         <button
